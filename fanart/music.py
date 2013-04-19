@@ -13,6 +13,8 @@ class CoverItem(LeafItem):
 class LogoItem(LeafItem):
     KEY = fanart.TYPE.MUSIC.LOGO
 
+class ThumbItem(LeafItem):
+    KEY = fanart.TYPE.MUSIC.THUMB
 
 class DiscItem(LeafItem):
     KEY = fanart.TYPE.MUSIC.DISC
@@ -28,12 +30,14 @@ class Artist(ResourceItem):
     WS = fanart.WS.MUSIC
 
     @Immutable.mutablemethod
-    def __init__(self, name, mbid, albums, backgrounds, logos):
+    def __init__(self, name, mbid, albums, backgrounds, thumbs,logos):
         self.name = name
         self.mbid = mbid
         self.albums = albums
         self.backgrounds = backgrounds
+        self.thumbs = thumbs
         self.logos = logos
+
 
     @classmethod
     def from_dict(cls, resource):
@@ -44,6 +48,7 @@ class Artist(ResourceItem):
             mbid=resource['mbid_id'],
             albums=Album.collection_from_dict(resource.get('albums', {})),
             backgrounds=BackgroundItem.extract(resource),
+            thumbs=ThumbItem.extract(resource),
             logos=LogoItem.extract(resource),
         )
 
